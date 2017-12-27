@@ -16,7 +16,7 @@ export const HomeStack = StackNavigator({
     },
     Options_screen:{
         screen:Options,
-        navigationOptions:{title:'Options'}
+        navigationOptions:{title:''}
     },
     Page_screen:{
         screen:Page,
