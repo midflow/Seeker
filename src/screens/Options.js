@@ -40,21 +40,21 @@ export default class Options extends Component {
         return (
             <View style={{ flex: 1, flexDirection: 'column'}}>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name }) }}>
+                    
                         <Image style={styles.imageViewTitle} source={{ uri: 'https://www.whitehouse.gov/wp-content/uploads/2017/12/44_barack_obama1.jpg' }} />
-                    </TouchableOpacity>
+                    
                     <Text style={styles.textTitle}>{this.props.navigation.state.params.name}</Text>
                
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.instagram }) }}>
                         <Image style={styles.imageView} source={require('../../assets/instagram.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.facebook }) }}>
                         <Image style={styles.imageView} source={require('../../assets/facebook.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.twitter }) }}>
                         <Image style={styles.imageView} source={require('../../assets/twitter.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.google }) }}>
                         <Image style={styles.imageView} source={require('../../assets/google.png')} />
                     </TouchableOpacity>
                 </View>

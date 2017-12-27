@@ -12,14 +12,32 @@ export const HomeStack = StackNavigator({
     },
     Candidates_screen:{
         screen:Candidates,
-        navigationOptions:{title:''}
+        navigationOptions: {
+            headerStyle: {
+                    elevation: 0,       //remove shadow on Android
+                    shadowOpacity: 0,   //remove shadow on iOS
+                }
+            
+        }
     },
     Options_screen:{
         screen:Options,
-        navigationOptions:{title:''}
+        navigationOptions: {
+            headerStyle: {
+                    elevation: 0,       //remove shadow on Android
+                    shadowOpacity: 0,   //remove shadow on iOS
+                }
+            
+        }
     },
     Page_screen:{
         screen:Page,
-        navigationOptions:{title:'Pages'}
+        navigationOptions: {
+            headerStyle: {
+                    elevation: 0,       //remove shadow on Android
+                    shadowOpacity: 0,   //remove shadow on iOS
+                }
+            
+        }
     }
 })

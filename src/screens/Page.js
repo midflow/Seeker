@@ -1,12 +1,15 @@
-import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, WebView } from 'react-native';
 
-export default class Page extends Component{
+export default class Page extends Component {
     render() {
         return (
-            <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-                <Text>Page</Text>
-            </View>
+            <WebView
+                source={{ uri: this.props.navigation.state.params.url }}
+                style={{ marginTop: 20 }}
+                renderLoading={this.renderLoading}
+                startInLoadingState
+            />
         );
     }
 }
