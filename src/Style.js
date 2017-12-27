@@ -52,13 +52,54 @@ const styles = StyleSheet.create({
     },
     cancel: {
       position: 'absolute',
-      right: 20,
-      top: 20,
-      backgroundColor: 'transparent',
-      color: '#FFF',
-      fontWeight: '600',
-      fontSize: 17,
-    }
+      left: 50,
+      bottom: 50,
+      backgroundColor: 'transparent',     
+      
+    },
+    accept: {
+      position: 'absolute',
+      right: 50,
+      bottom: 50,
+      backgroundColor: 'transparent',     
+      
+    },
+    photo: {
+      height: 40,
+      width: 40,
+      borderRadius: 20,
+    },
+    text: {
+      marginLeft: 12,
+      fontSize: 30,
+      color: '#fff',
+      textAlignVertical:'center',
+      alignContent:'center',
+      alignItems:'center'   
+    },
+    list: {
+      flex:1,
+      flexDirection: 'column',
+      flexWrap: 'wrap',
+      backgroundColor:'#fff',
+      padding:20,
+    },
+    imageViewContainer: {
+      width: '30%',
+      height: 70,    
+      width: 70,
+      borderRadius : 35       
+      },
+      textViewContainer: {       
+        flex:1, 
+        height: 70,
+        paddingLeft:10,                   
+      },
+      textViewBox: { 
+        flex:1,               
+        borderRadius : 10,        
+        backgroundColor:'#47525e'       
+      }
   });
 
   export default styles

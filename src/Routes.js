@@ -12,7 +12,7 @@ export const HomeStack = StackNavigator({
     },
     Candidates_screen:{
         screen:Candidates,
-        navigationOptions:{title:'Candidates'}
+        navigationOptions:{title:''}
     },
     Options_screen:{
         screen:Options,

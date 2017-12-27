@@ -112,14 +112,19 @@ export default class Home extends Component {
         return (
             <View>
                 <Image
-                    source={{ uri: this.state.path }} 
-                     style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}                   
+                    source={{ uri: this.state.path }}
+                    style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                 />
-                <Text
-                    style={styles.cancel}
-                    onPress={() => this.setState({ path: null })}
-                >Cancel
-            </Text>
+                <View style={styles.cancel}>
+                    <TouchableOpacity onPress={() => this.setState({ path: null })}>
+                        <Image source={require('../../assets/error.png')} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.accept}>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Candidates_screen', { path: this.state.path }) }}>
+                        <Image source={require('../../assets/valid.png')} />
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
