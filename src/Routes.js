@@ -4,10 +4,16 @@ import Home from './screens/Home';
 import Candidates from './screens/Candidates';
 import Options from './screens/Options';
 import Page from './screens/Page';
+import CameraRolls  from './screens/CameraRolls';
+
 
 export const HomeStack = StackNavigator({
     Home_screen: {
         screen:Home,
+        navigationOptions: { header:null}
+    },
+    CameraRoll_screen: {
+        screen:CameraRolls,
         navigationOptions: { header:null}
     },
     Candidates_screen:{
@@ -32,7 +38,7 @@ export const HomeStack = StackNavigator({
     },
     Page_screen:{
         screen:Page,
-        navigationOptions: {
+        navigationOptions: {            
             headerStyle: {
                     elevation: 0,       //remove shadow on Android
                     shadowOpacity: 0,   //remove shadow on iOS

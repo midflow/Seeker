@@ -24,8 +24,10 @@ export default class Home extends Component {
                 type: Camera.constants.Type.back,
                 orientation: Camera.constants.Orientation.auto,
                 flashMode: Camera.constants.FlashMode.auto,
+                captureQuality:Camera.constants.CaptureQuality.medium
             },
             path: null,
+            photos:[],
         };
     }
 
@@ -107,7 +109,7 @@ export default class Home extends Component {
 
         return icon;
     }
-
+    
     renderImage() {
         return (
             <View>
@@ -145,13 +147,13 @@ export default class Home extends Component {
                     captureTarget={this.state.camera.captureTarget}
                     type={this.state.camera.type}
                     flashMode={this.state.camera.flashMode}
+                    captureQuality = {this.state.camera.captureQuality}
                     onFocusChanged={() => { }}
                     onZoomChanged={() => { }}
                     defaultTouchToFocus
                     mirrorImage={false}
                 />
                 <View style={[styles.overlay, styles.topOverlay]}>
-
                     <TouchableOpacity
                         style={styles.flashButton}
                         onPress={this.switchFlash}
@@ -159,6 +161,14 @@ export default class Home extends Component {
                         <Image
                             source={this.flashIcon}
                         />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.flashButton}
+                        onPress={() => {this.props.navigation.navigate('CameraRoll_screen')}}
+                    >
+                        <Image
+                                source={require('../../assets/cameraroll.png')}
+                            />
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.overlay, styles.bottomOverlay]}>

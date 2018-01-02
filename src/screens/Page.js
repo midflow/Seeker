@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, WebView } from 'react-native';
 
 export default class Page extends Component {
+    static navigationOptions = ({ navigation }) => ({
+        title: navigation.state.params.name,
+      });
+
     render() {
         return (
             <WebView

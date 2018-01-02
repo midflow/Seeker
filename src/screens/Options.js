@@ -45,16 +45,16 @@ export default class Options extends Component {
                     
                     <Text style={styles.textTitle}>{this.props.navigation.state.params.name}</Text>
                
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.instagram }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.instagram, name: this.props.navigation.state.params.name}) }}>
                         <Image style={styles.imageView} source={require('../../assets/instagram.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.facebook }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.facebook, name: this.props.navigation.state.params.name }) }}>
                         <Image style={styles.imageView} source={require('../../assets/facebook.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.twitter }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.twitter, name: this.props.navigation.state.params.name }) }}>
                         <Image style={styles.imageView} source={require('../../assets/twitter.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.google }) }}>
+                    <TouchableOpacity style={styles.textViewContainer} onPress={() => { this.props.navigation.navigate('Page_screen', { url: this.state.google, name: this.props.navigation.state.params.name }) }}>
                         <Image style={styles.imageView} source={require('../../assets/google.png')} />
                     </TouchableOpacity>
                 </View>
