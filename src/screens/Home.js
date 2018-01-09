@@ -123,7 +123,7 @@ export default class Home extends Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.accept}>
-                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Candidates_screen', { path: this.state.path }) }}>
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Candidates_screen', { path: this.state.path, cameraroll:'false' }) }}>
                         <Image source={require('../../assets/valid.png')} />
                     </TouchableOpacity>
                 </View>

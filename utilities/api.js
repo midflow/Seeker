@@ -98,6 +98,15 @@ var api = {
 
         // xhr.send(data);
     },
+    getInfoFromNameAsync($name) {
+        var url= 'https://seeker.frb.io/api/candidate/'+$name;
+
+        return fetch(url)
+            .then(res => res.json())
+            .catch(error => {
+                console.error(error);
+            });
+    },
 }
 
 module.exports = api;

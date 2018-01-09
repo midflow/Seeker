@@ -25,8 +25,8 @@ export default data = [{
                     }
                 }
             ],
-            resolved_url: "https://www.whitehouse.gov/wp-content/uploads/2017/12/44_barack_obama1.jpg",
-            source_url: "https://www.whitehouse.gov/wp-content/uploads/2017/12/44_barack_obama1.jpg"
+            resolved_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Obama_portrait_crop.jpg/446px-Obama_portrait_crop.jpg",
+            source_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Obama_portrait_crop.jpg/446px-Obama_portrait_crop.jpg"
         }
     ],
     images_processed: 1

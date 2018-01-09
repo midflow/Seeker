@@ -28,12 +28,21 @@ export default class Options extends Component {
             facebook: "https://www.facebook.com/barackobama/?ref=br_rs",
             twitter: "https://twitter.com/BarackObama",
             instagram: "https://www.instagram.com/barackobama/",
-            google: "https://www.google.com.vn/search?q=barack+obama"
+            google: "https://www.google.com.vn/search?q=barack+obama",            
         }
     }
 
 
-
+    componentDidMount() {
+        api.getInfoFromNameAsync(this.props.navigation.state.params.name).then((res) => {
+            if (res.length>0) this.setState({                
+                facebook: res[0].facebook,
+                twitter: res[0].twitter,
+                instagram: res[0].instagram,
+                google: res[0].google,
+            })
+        })
+    }
 
     render() {
 
@@ -41,7 +50,7 @@ export default class Options extends Component {
             <View style={{ flex: 1, flexDirection: 'column'}}>
                 <View style={{ flex: 1, alignItems: 'center' }}>
                     
-                        <Image style={styles.imageViewTitle} source={{ uri: 'https://www.whitehouse.gov/wp-content/uploads/2017/12/44_barack_obama1.jpg' }} />
+                        <Image style={styles.imageViewTitle} source={{ uri: this.props.navigation.state.params.imageSource }} />
                     
                     <Text style={styles.textTitle}>{this.props.navigation.state.params.name}</Text>
                

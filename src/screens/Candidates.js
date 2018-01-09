@@ -11,6 +11,7 @@ import {
 import Row from '../Row'
 import api from '../../utilities/api';
 import styles from '../Style';
+import data from '../../utilities/data';
 
 
 export default class Candidates extends Component {
@@ -19,17 +20,37 @@ export default class Candidates extends Component {
         super(props);
         //this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });        
         this.state = {
-            IBMImages: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),
+            IBMImages: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),            
         }
     }
 
 
     componentDidMount() {
-        api.getCandidatesFromApiAsync_Fetch(this.props.navigation.state.params.path).then((res) => {
-            if (res.images.length>0) this.setState({                
-                IBMImages: this.state.IBMImages.cloneWithRows(res.images)
-            })
-        })
+        // if (this.props.navigation.state.params.cameraroll=='true')
+        // {
+        //     this.setState({
+        //         imageSource:this.props.navigation.state.params.path
+        //     });
+        // }
+        // else
+        // {
+        //     this.setState({
+        //         imageSource:this.props.navigation.state.params.path
+        //     });
+        // }
+        
+        
+        this.setState({                
+                    IBMImages: this.state.IBMImages.cloneWithRows(data[0].images),
+                    imageSource:data[0].images[0].resolved_url
+                    //IBMImages: this.state.IBMImages.cloneWithRows(data)
+                })
+        // api.getCandidatesFromApiAsync_Fetch(this.props.navigation.state.params.path).then((res) => {
+        //     if (res.images.length>0) this.setState({                
+        //         IBMImages: this.state.IBMImages.cloneWithRows(res.images)
+        //         //IBMImages: this.state.IBMImages.cloneWithRows(data)
+        //     })
+        // })
     }
 
     render() {
@@ -53,15 +74,15 @@ export default class Candidates extends Component {
         else {
             return (
                 <ListView contentContainerStyle={styles.list}
-                    dataSource={this.state.IBMImages}
+                    dataSource={this.state.IBMImages}                    
                     renderRow={(data) => {
                         if (data.faces[0] && data.faces[0].identity) 
                         return (
                             <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 20 }}>
                                 <TouchableOpacity onPress={() => {this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name}) }}>
-                                    <Image style={styles.imageViewContainer} source={{ uri: data.resolved_url }} />
+                                    <Image style={styles.imageViewContainer} source={{ uri: this.state.imageSource }} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.textViewContainer} onPress={() => {this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name }) }}>
+                                <TouchableOpacity style={styles.textViewContainer} onPress={() => {this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name, imageSource: this.state.imageSource }) }}>
                                     <View style={styles.textViewBox}>
                                         <Text style={styles.text}>
                                             {data.faces[0].identity.name}

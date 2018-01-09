@@ -39,7 +39,7 @@ export default class CameraRolls extends Component {
         <View style={styles.content}>
         <TouchableOpacity
                         style={styles.flashButton}
-                        onPress={() => { this.props.navigation.navigate('Candidates_screen', { path: this.state.path }) }}
+                        onPress={() => { this.props.navigation.navigate('Candidates_screen', { path: this.state.path, cameraroll:'true' }) }}
                     >
                         <Image
                                 source={require('../../assets/Next.png')}
