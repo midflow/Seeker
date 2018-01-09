@@ -11,6 +11,7 @@ import {
 import Row from '../Row'
 import api from '../../utilities/api';
 import styles from '../Style';
+import data from '../../utilities/data';
 
 
 export default class Candidates extends Component {
@@ -25,11 +26,14 @@ export default class Candidates extends Component {
 
 
     componentDidMount() {
-        api.getCandidatesFromApiAsync_Fetch(this.props.navigation.state.params.path).then((res) => {
-            if (res.images.length>0) this.setState({                
-                IBMImages: this.state.IBMImages.cloneWithRows(res.images)
-            })
+        this.setState({                
+            IBMImages: this.state.IBMImages.cloneWithRows(data[0].images)
         })
+        // api.getCandidatesFromApiAsync(this.props.navigation.state.params.path).then((res) => {
+        //     if (res.images.length>0) this.setState({                
+        //         IBMImages: this.state.IBMImages.cloneWithRows(res.images)
+        //     })
+        // })
     }
 
     render() {
@@ -55,7 +59,7 @@ export default class Candidates extends Component {
                 <ListView contentContainerStyle={styles.list}
                     dataSource={this.state.IBMImages}
                     renderRow={(data) => {
-                        if (data.faces[0] && data.faces[0].identity) 
+                        if (data && data.faces[0] && data.faces[0].identity) 
                         return (
                             <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 20 }}>
                                 <TouchableOpacity onPress={() => {this.props.navigation.navigate('Options_screen', { name: data.faces[0].identity.name}) }}>

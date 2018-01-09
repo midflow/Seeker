@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   text: {
-    marginLeft: 12,
-    fontSize: 30,
+    marginLeft: 10,
+    fontSize: 25,
     color: '#fff',
     textAlignVertical: 'center',
     alignContent: 'center',

@@ -25,7 +25,7 @@ export default class Options extends Component {
         this.state = {
             name: "Barack Obama",
             image: this.props.navigation.state.params.image,
-            facebook: "https://www.facebook.com/barackobama/?ref=br_rs",
+            facebook: "https://www.facebook.com/barackobama/",
             twitter: "https://twitter.com/BarackObama",
             instagram: "https://www.instagram.com/barackobama/",
             google: "https://www.google.com.vn/search?q=barack+obama"
