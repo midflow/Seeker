@@ -99,7 +99,7 @@ var api = {
         // xhr.send(data);
     },
     getInfoFromNameAsync($name) {
-        var url= 'https://seeker.frb.io/api/candidate/'+$name;
+        var url= 'http://ec2-13-112-53-179.ap-northeast-1.compute.amazonaws.com/api/candidate/'+$name;
 
         return fetch(url)
             .then(res => res.json())

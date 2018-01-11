@@ -34,23 +34,23 @@ export default class Candidates extends Component {
         // }
         // else
         // {
-        //     this.setState({
-        //         imageSource:this.props.navigation.state.params.path
-        //     });
-        // }
+            this.setState({
+                imageSource:this.props.navigation.state.params.path
+            });
+        //}
         
         
-        this.setState({                
-                    IBMImages: this.state.IBMImages.cloneWithRows(data[0].images),
-                    imageSource:data[0].images[0].resolved_url
-                    //IBMImages: this.state.IBMImages.cloneWithRows(data)
-                })
-        // api.getCandidatesFromApiAsync_Fetch(this.props.navigation.state.params.path).then((res) => {
-        //     if (res.images.length>0) this.setState({                
-        //         IBMImages: this.state.IBMImages.cloneWithRows(res.images)
-        //         //IBMImages: this.state.IBMImages.cloneWithRows(data)
-        //     })
-        // })
+        // this.setState({                
+        //             IBMImages: this.state.IBMImages.cloneWithRows(data[0].images),
+        //             imageSource:data[0].images[0].resolved_url
+        //             //IBMImages: this.state.IBMImages.cloneWithRows(data)
+        //         })
+        api.getCandidatesFromApiAsync_Fetch(this.props.navigation.state.params.path).then((res) => {
+            if (res.images.length>0) this.setState({                
+                IBMImages: this.state.IBMImages.cloneWithRows(res.images)
+                //IBMImages: this.state.IBMImages.cloneWithRows(data)
+            })
+        })
     }
 
     render() {
@@ -93,7 +93,7 @@ export default class Candidates extends Component {
                         );
                         else
                         return(
-                            <View style={{ flex: 1, flexDirection: 'row', paddingBottom: 20 }}>
+                            <View style={{ flex: 1, flexDirection: 'column', paddingBottom: 20 }}>
                                 <TouchableOpacity>
                                     <Image style={styles.imageViewContainer} source={{ uri: this.props.navigation.state.params.path }} />
                                 </TouchableOpacity>
