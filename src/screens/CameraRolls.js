@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import CameraRollPicker from 'react-native-camera-roll-picker';
+//import styles from '../Style';
 
 export default class CameraRolls extends Component {
   constructor(props) {
@@ -23,10 +24,8 @@ export default class CameraRolls extends Component {
 
   
   getSelectedImages(images, current) {    
-
-    
     this.setState({      
-      path: images[0].uri,
+      path: images.length>0?images[0].uri:"",
     });
 
     console.log(current);
@@ -36,14 +35,26 @@ export default class CameraRolls extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.content}>
+        <View style={[styles.overlay, styles.topOverlay]}>
         <TouchableOpacity
-                        style={styles.flashButton}
+                        style={styles.BackButton}
+                        onPress={() => { this.props.navigation.navigate('Home_screen', { path: this.state.path, cameraroll:'true' }) }}
+                    >            
+                        <Image
+                                source={require('../../assets/Back.png')}
+                            />
+                    </TouchableOpacity>
+        
+        <Text style={styles.text}>Camera Roll</Text>
+        <TouchableOpacity disabled={this.state.path.length==0}
+                        style={styles.NextButton}
                         onPress={() => { this.props.navigation.navigate('Candidates_screen', { path: this.state.path, cameraroll:'true' }) }}
                     >
+                    
                         <Image
-                                source={require('../../assets/Next.png')}
+                                source={this.state.path.length==0?require('../../assets/Next_Disabled.png'):require('../../assets/Next.png')}
                             />
+
                     </TouchableOpacity>
         </View>
         <CameraRollPicker
@@ -79,14 +90,28 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   text: {
-    fontSize: 16,
+    fontSize: 25,
     alignItems: 'center',
-    color: '#fff',
+    //color: '#fff',
   },
   bold: {
     fontWeight: 'bold',
   },
   info: {
     fontSize: 12,
+  },
+  overlay: {
+    //position: "absolute",
+    padding: 10,
+    right: 0,
+    left: 0,
+    alignItems: "center"
+  },
+  topOverlay: {
+    top: 0,
+    flex: 0,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
 });

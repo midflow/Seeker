@@ -99,9 +99,18 @@ var api = {
         // xhr.send(data);
     },
     getInfoFromNameAsync($name) {
-        var url= 'http://ec2-13-112-53-179.ap-northeast-1.compute.amazonaws.com/api/candidate/'+$name;
+        var url= encodeURI('http://ec2-13-112-53-179.ap-northeast-1.compute.amazonaws.com/api/candidate/'+$name);
 
         return fetch(url)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    return response;
+                  } else {
+                    let error = new Error(response.statusText);
+                    error.response = response;
+                    throw error;
+                  }
+            })
             .then(res => res.json())
             .catch(error => {
                 console.error(error);
