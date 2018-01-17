@@ -41,7 +41,7 @@ export default class CameraRolls extends Component {
                         onPress={() => { this.props.navigation.navigate('Home_screen', { path: this.state.path, cameraroll:'true' }) }}
                     >            
                         <Image
-                                source={require('../../assets/Back.png')}
+                                source={require('../../assets/back.png')}
                             />
                     </TouchableOpacity>
         
@@ -52,7 +52,7 @@ export default class CameraRolls extends Component {
                     >
                     
                         <Image
-                                source={this.state.path.length==0?require('../../assets/Next_Disabled.png'):require('../../assets/Next.png')}
+                                source={this.state.path.length==0?require('../../assets/next_disabled.png'):require('../../assets/next.png')}
                             />
 
                     </TouchableOpacity>

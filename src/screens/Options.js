@@ -36,7 +36,7 @@ export default class Options extends Component {
     api
       .getInfoFromNameAsync(this.props.navigation.state.params.name)
       .then(res => {
-        if (res && res.length > 0)
+        if (res && res[0] && res.length > 0)
           this.setState({
             isLoading: false,  
             result: res,
@@ -44,7 +44,13 @@ export default class Options extends Component {
             twitter: res[0]?res[0].twitter:"",
             instagram: res[0]?res[0].instagram:"",
             google: res[0]?res[0].google:""
+          })
+          else
+          {
+            this.setState({
+              isLoading: false,
           });
+          };
       }).catch((err) => {
         this.setState({
             isLoading: false,
@@ -62,7 +68,7 @@ export default class Options extends Component {
         );
     }
     else
-    if (this.state.result!=null && this.state.result.length > 0) {
+    if (this.state.result && this.state.result[0] && this.state.result.length > 0) {
       return (
         <View style={{ flex: 1, flexDirection: "column" }}>
           <View style={{ flex: 1, alignItems: "center" }}>
