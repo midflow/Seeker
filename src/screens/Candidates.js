@@ -6,7 +6,8 @@ import {
     Image,
     FlatList,
     TouchableOpacity,
-    ActivityIndicator
+    ActivityIndicator,
+    ScrollView
 } from 'react-native';
 import Row from '../Row'
 import api from '../../utilities/api';
@@ -22,7 +23,8 @@ export default class Candidates extends Component {
         this.state = {
             IBMImages: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),  
             identity:null,
-            isLoading:false,          
+            isLoading:false,  
+            noFaces:true,        
         }
     }
 
@@ -49,20 +51,30 @@ export default class Candidates extends Component {
         //         })
         
         ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
-            this.setState({isLoading:true});
+            this.setState({ isLoading: true });
             api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
-                if (res.images.length>0) this.setState({                
-                    IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
-                    isLoading: false,
-                    identity: res.images[0].faces.length>0&&res.images[0].faces[0].identity?res.images[0].faces[0].identity:null,
-                    //IBMImages: this.state.IBMImages.cloneWithRows(data)
-                })
+
+                if (res.images.length > 0) {
+                    res.images[0].faces.forEach(e => {
+                        if (e.identity)
+                        this.setState({
+                            noFaces:false,
+                        });
+                    });
+
+                    this.setState({
+                        IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
+                        isLoading: false,
+                        identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
+                        //IBMImages: this.state.IBMImages.cloneWithRows(data)
+                    });
+                }
             })
-          }).catch((err) => {
+        }).catch((err) => {
             // Oops, something went wrong. Check that the filename is correct and
             // inspect err to get more details.
             console.log(err);
-          });
+        });
         // api.getCandidatesFromApiAsync_Fetch(this.props.navigation.state.params.path).then((res) => {
         //     if (res.images.length>0) this.setState({                
         //         IBMImages: this.state.IBMImages.cloneWithRows(res.images)
@@ -90,7 +102,7 @@ export default class Candidates extends Component {
                 </View>
             );
         }
-        else if (this.state.IBMImages.getRowCount() === 0 || (this.state.IBMImages.getRowCount()==1 
+        else if (this.state.noFaces || this.state.IBMImages.getRowCount() === 0 || (this.state.IBMImages.getRowCount()==1 
         && this.state.identity==null))    
         {
             return <View style={{ flex: 0.5, flexDirection: "column"}}>
@@ -119,7 +131,7 @@ export default class Candidates extends Component {
             }    
         else {
             return (
-                <ListView contentContainerStyle={styles.list}
+                <ScrollView style={{flex: 1}}><ListView contentContainerStyle={styles.list}
                     dataSource={this.state.IBMImages}                    
                     renderRow={(data) => {
                         if (data && data.identity) 
@@ -164,6 +176,7 @@ export default class Candidates extends Component {
                         //   </View>;
                     }}
                 />
+                </ScrollView>
             );
         }
     }

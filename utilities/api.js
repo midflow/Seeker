@@ -19,7 +19,7 @@ function request($imagePath) {
             }
         });
 
-        xhr.open("POST", "https://watson-api-explorer.mybluemix.net/visual-recognition/api/v3/detect_faces?api_key=40b30a01435fa6f174b4b1f7214e193ab795cb09&version=2016-05-20");
+        xhr.open("POST", "https://gateway-a.watsonplatform.net/visual-recognition/api/v3/detect_faces?api_key=d0bf1055f66a807f9feccb6aa57503ee1b01706f&version=2016-05-20");
         xhr.setRequestHeader("cache-control", "no-cache");
         xhr.setRequestHeader("postman-token", "fe0ce642-0287-aca3-1636-9064271616c7");
 
