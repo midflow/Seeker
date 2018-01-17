@@ -21,6 +21,7 @@ export default class Options extends Component {
     super(props);
     //this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });
     this.state = {
+      isLoading: true,
       result: [],
       name: "",
       image: this.props.navigation.state.params.image,
@@ -35,19 +36,33 @@ export default class Options extends Component {
     api
       .getInfoFromNameAsync(this.props.navigation.state.params.name)
       .then(res => {
-        if (!res==null && res.length > 0)
+        if (res && res.length > 0)
           this.setState({
+            isLoading: false,  
             result: res,
             facebook: res[0]?res[0].facebook:"",
             twitter: res[0]?res[0].twitter:"",
             instagram: res[0]?res[0].instagram:"",
             google: res[0]?res[0].google:""
           });
+      }).catch((err) => {
+        this.setState({
+            isLoading: false,
+        });
+        console.log(err);
       });
   }
 
   render() {
-    if (this.state.result.length > 0) {
+    if (this.state.isLoading) {
+        return (
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+    else
+    if (this.state.result!=null && this.state.result.length > 0) {
       return (
         <View style={{ flex: 1, flexDirection: "column" }}>
           <View style={{ flex: 1, alignItems: "center" }}>
