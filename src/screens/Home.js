@@ -6,7 +6,9 @@ import {
     CameraRoll,
     Image,
     Text,
-    Dimensions
+    Dimensions,
+    BackHandler,
+    Alert
 } from 'react-native';
 import styles from '../Style';
 import Camera from 'react-native-camera';
@@ -30,6 +32,37 @@ export default class Home extends Component {
             photos:[],
         };
     }
+
+    onButtonPress = () => {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        // then navigate
+        navigate('NewScreen');
+      }
+      
+      handleBackButton = () => {
+       Alert.alert(
+           'Exit App',
+           'Exiting the application?', [{
+               text: 'Cancel',
+               onPress: () => console.log('Cancel Pressed'),
+               style: 'cancel'
+           }, {
+               text: 'OK',
+               onPress: () => BackHandler.exitApp()
+           }, ], {
+               cancelable: false
+           }
+        )
+        return true;
+      } 
+      
+      componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+      }
+      
+      componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+      }
 
     takePicture = () => {
         if (this.camera) {

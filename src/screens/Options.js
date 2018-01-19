@@ -15,6 +15,8 @@ import instagram from "../../assets/instagram.png";
 import facebook from "../../assets/facebook.png";
 import twitter from "../../assets/twitter.png";
 import google from "../../assets/google.png";
+//import { Navigation} from 'react-native-navigation';
+import { NavigationActions } from 'react-navigation';
 
 export default class Options extends Component {
   constructor(props) {
@@ -150,6 +152,17 @@ export default class Options extends Component {
 
           <TouchableOpacity  style={{ flex:0.7, justifyContent: "flex-start", alignItems: "center" }} onPress={() => {
               this.props.navigation.navigate("Home_screen");
+              // const resetAction = NavigationActions.reset({
+              //   key:null,
+              //   index: 0,
+              //   actions: [NavigationActions.navigate({ routeName: 'Home_screen' })]
+              // });
+              
+              // this.props.navigation.dispatch(resetAction);
+
+              // this.props.navigation.reset({
+              //   screen: 'Home_screen', 
+              // });
             }}>
             <View style={styles.errorMessage}>
                                         <Text style={styles.text}>
