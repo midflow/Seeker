@@ -17,7 +17,7 @@ export const HomeStack = StackNavigator({
         navigationOptions: { header:null}
     },
     Candidates_screen:{
-        screen:Candidates,
+        screen:Candidates,        
         navigationOptions: {
             headerStyle: {
                     elevation: 0,       //remove shadow on Android
@@ -47,3 +47,18 @@ export const HomeStack = StackNavigator({
         }
     }
 })
+
+const defaultGetStateForAction = HomeStack.router.getStateForAction;
+HomeStack.router.getStateForAction = (action, state) => {            
+    if (state && action.type === 'GoToRoute') {           
+        let index = state.routes.findIndex((item) => {
+            return item.routeName === action.routeName
+        });
+        const routes = state.routes.slice(0, index+1);
+        return {
+            routes,
+            index
+        };    
+    }       
+    return defaultGetStateForAction(action, state);
+};

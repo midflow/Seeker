@@ -7,29 +7,82 @@ import {
     FlatList,
     TouchableOpacity,
     ActivityIndicator,
-    ScrollView
+    ScrollView,
+    NetInfo
 } from 'react-native';
 import Row from '../Row'
 import api from '../../utilities/api';
 import styles from '../Style';
 import data from '../../utilities/data';
 import ImageResizer from 'react-native-image-resizer';
+import global from '../../utilities/global';
 
 export default class Candidates extends Component {
 
     constructor(props) {
-        super(props);
+        super(props);              
+
         //this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });        
         this.state = {
             IBMImages: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),  
             identity:null,
             isLoading:false,  
-            noFaces:true,        
+            noFaces:true, 
+            isConnected: true, 
+            imageSource:'',      
         }
+
+        global.mainScreen = false;
+        global.currentScreen = 'Candidates';
+        global.imageSource = this.state.imageSource;
+        global.uri = this.props.navigation.state.params.path;  
     }
 
 
     componentDidMount() {
+        // Check for network connectivity
+        NetInfo.isConnected.fetch().done((isConnected) => {
+            if ( isConnected )
+            {
+                this.setState({
+                    isConnected:true,
+                    imageSource:this.props.navigation.state.params.path,
+                });
+
+                if (this.state.isConnected)
+                    ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
+                        this.setState({ isLoading: true });
+                        api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
+
+                            if (res.images.length > 0) {
+                                res.images[0].faces.forEach(e => {
+                                    if (e.identity)
+                                    this.setState({
+                                        noFaces:false,
+                                    });
+                                });
+
+                                this.setState({
+                                    IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
+                                    isLoading: false,
+                                    identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
+                                    //IBMImages: this.state.IBMImages.cloneWithRows(data)
+                                });
+                            }
+                        })
+                    }).catch((err) => {
+                        // Oops, something went wrong. Check that the filename is correct and
+                        // inspect err to get more details.
+                        console.log(err);
+                    });
+            }
+            else
+            {
+                this.setState({
+                    isConnected:false,
+                });               
+            }
+        });
         // if (this.props.navigation.state.params.cameraroll=='true')
         // {
         //     this.setState({
@@ -41,46 +94,7 @@ export default class Candidates extends Component {
             this.setState({
                 imageSource:this.props.navigation.state.params.path
             });
-        //}
-        
-        
-        // this.setState({                
-        //             IBMImages: this.state.IBMImages.cloneWithRows(data[0].images),
-        //             imageSource:data[0].images[0].resolved_url
-        //             //IBMImages: this.state.IBMImages.cloneWithRows(data)
-        //         })
-        
-        ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
-            this.setState({ isLoading: true });
-            api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
-
-                if (res.images.length > 0) {
-                    res.images[0].faces.forEach(e => {
-                        if (e.identity)
-                        this.setState({
-                            noFaces:false,
-                        });
-                    });
-
-                    this.setState({
-                        IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
-                        isLoading: false,
-                        identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
-                        //IBMImages: this.state.IBMImages.cloneWithRows(data)
-                    });
-                }
-            })
-        }).catch((err) => {
-            // Oops, something went wrong. Check that the filename is correct and
-            // inspect err to get more details.
-            console.log(err);
-        });
-        // api.getCandidatesFromApiAsync_Fetch(this.props.navigation.state.params.path).then((res) => {
-        //     if (res.images.length>0) this.setState({                
-        //         IBMImages: this.state.IBMImages.cloneWithRows(res.images)
-        //         //IBMImages: this.state.IBMImages.cloneWithRows(data)
-        //     })
-        // })
+        //}             
         
     }
 
@@ -95,6 +109,29 @@ export default class Candidates extends Component {
         //     resolved_url: 'https://www.whitehouse.gov/wp-content/uploads/2017/12/44_barack_obama1.jpg',
         //     name: 'Obama'
         // }]);
+        if (!this.state.isConnected)
+        {
+            return <View style={{ flex: 0.5, flexDirection: "column"}}>                            
+                              <TouchableOpacity style={styles.textViewContainer}  onPress={() => {
+                                  this.props.navigation.navigate(
+                                    "Home_screen"
+                                  );
+                                  //this.props.navigation = null; 
+                                }}>
+                                <View style={{flex: 0.7, borderRadius: 10, backgroundColor: "#47525e", justifyContent: "center"}}>
+                                  <Text
+                                    style={{
+                                      fontSize: 25, margin:10, color:'#fff'
+                                    }}
+                                  >
+                                    Please check your network connection and try it again!
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            
+                          </View>;
+        }
+        else
         if (this.state.isLoading && this.state.IBMImages.getRowCount() === 0) {
             return (
                 <View style={[styles.container, styles.horizontal]}>
@@ -113,6 +150,7 @@ export default class Candidates extends Component {
                                   this.props.navigation.navigate(
                                     "Home_screen"
                                   );
+                                  this.props.navigation = null; 
                                 }}>
                                 <View style={{flex: 0.7, borderRadius: 10, backgroundColor: "#47525e", justifyContent: "center"}}>
                                   <Text
@@ -140,7 +178,9 @@ export default class Candidates extends Component {
                                 <TouchableOpacity onPress={() => {this.props.navigation.navigate('Options_screen', { name: data.identity.name}) }}>
                                     <Image style={styles.imageViewContainer} source={{ uri: this.state.imageSource }} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.textViewContainer} onPress={() => {this.props.navigation.navigate('Options_screen', { name: data.identity.name, imageSource: this.state.imageSource }) }}>
+                                <TouchableOpacity style={styles.textViewContainer} onPress={() => {
+                                    global.name = data.identity.name;
+                                    this.props.navigation.navigate('Options_screen', { name: data.identity.name, imageSource: this.state.imageSource }) }}>
                                     <View style={styles.textViewBox}>
                                         <Text style={styles.text}>
                                             {data.identity.name}

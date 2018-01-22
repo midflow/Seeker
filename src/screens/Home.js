@@ -12,12 +12,20 @@ import {
 } from 'react-native';
 import styles from '../Style';
 import Camera from 'react-native-camera';
+import global from '../../utilities/global';
+//import { NavigationActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 export default class Home extends Component {
     constructor(props) {
         super(props);
 
         this.camera = null;
+
+        global.mainScreen = true;
+        global.currentScreen = 'Home';      
+                         
+        //this.props.navigation.state = null;
 
         this.state = {
             camera: {
@@ -26,35 +34,86 @@ export default class Home extends Component {
                 type: Camera.constants.Type.back,
                 orientation: Camera.constants.Orientation.auto,
                 flashMode: Camera.constants.FlashMode.auto,
-                captureQuality:Camera.constants.CaptureQuality.medium
-            },
+                captureQuality:Camera.constants.CaptureQuality.high
+            },            
             path: null,
             photos:[],
         };
+
+        // this.handleBack = (() => {
+        //     if (this.navigator && this.navigator.getCurrentRoutes().length > 1){
+        //       this.navigator.pop();
+        //       return true; //avoid closing the app
+        //     }
+      
+        //     return false; //close the app
+        //   }).bind(this) //don't forget bind this, you will remember anyway.
+        //if (global.mainScreen==true)
+        this.handleBackButton = (() => {
+                        
+            //if (global.currentScreen=='Home')
+            Alert.alert(
+                'Exit App',
+                'Exiting the application?', [{
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                }, {
+                    text: 'OK',
+                    onPress: () => BackHandler.exitApp()
+                }, ], {
+                    cancelable: false
+                }
+             )
+             //else 
+            // {
+                //  switch (global.currentScreen)
+                //  {
+                //      case 'CameraRoll':
+                //         this.props.navigation.navigate('Home_screen');
+                //         break;
+                //         case 'Candidates':
+                //         if (global.cameraroll)
+                //         this.props.navigation.navigate('CameraRoll_screen');
+                //         else
+                //         this.props.navigation.navigate('Home_screen');
+                //         break;
+                //         case 'Options':
+                //         this.props.navigation.navigate('Candidates_screen', { path: global.uri, cameraroll:'true' });
+                //         break;
+                //         case 'Page':
+                //         this.props.navigation.navigate('Options_screen');
+                //         break;
+                //  }
+                //const {goBack} = this.props.navigation;
+                 //goBack();
+                //  if (global.mainScreen==true)
+                //     Alert.alert(
+                //         'Exit App',
+                //         'Exiting the application?', [{
+                //             text: 'Cancel',
+                //             onPress: () => console.log('Cancel Pressed'),
+                //             style: 'cancel'
+                //         }, {
+                //             text: 'OK',
+                //             onPress: () => BackHandler.exitApp()
+                //         }, ], {
+                //             cancelable: false
+                //         }
+                //     )
+                // else
+                //     this.props.navigation.dispatch(NavigationActions.back());
+            // }
+
+             return true;
+           } ).bind(this)
     }
 
-    onButtonPress = () => {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-        // then navigate
-        navigate('NewScreen');
-      }
-      
-      handleBackButton = () => {
-       Alert.alert(
-           'Exit App',
-           'Exiting the application?', [{
-               text: 'Cancel',
-               onPress: () => console.log('Cancel Pressed'),
-               style: 'cancel'
-           }, {
-               text: 'OK',
-               onPress: () => BackHandler.exitApp()
-           }, ], {
-               cancelable: false
-           }
-        )
-        return true;
-      } 
+    // onButtonPress = () => {
+    //     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    //     // then navigate
+    //     navigate('NewScreen');
+    //   }   
       
       componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
@@ -197,7 +256,19 @@ export default class Home extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.flashButton}
-                        onPress={() => {this.props.navigation.navigate('CameraRoll_screen')}}
+                        onPress={() => {
+                            //this.props.navigation.state.routeName = 'CameraRoll_screen';
+                                this.props.navigation.navigate('CameraRoll_screen');
+                                // const resetAction = NavigationActions.reset({
+                                //     //key:null,
+                                //     index: 1,
+                                //     actions: [NavigationActions.navigate({ routeName: 'Home_screen' }),
+                                //     NavigationActions.navigate({ routeName: 'CameraRoll_screen'})]
+                                // });
+                
+                                // this.props.navigation.dispatch(resetAction);
+                            }
+                        }
                     >
                         <Image
                                 source={require('../../assets/cameraroll.png')}

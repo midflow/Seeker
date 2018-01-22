@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import { View, Text, BackAndroid } from 'react-native';
 import {HomeStack, Tabbar} from './src/Routes';
 
 export default class App extends Component{
-  render() {
-      return (
-          <HomeStack/>
-      );
+    constructor(props) {
+        super(props);
+
+        this.currentScreen = 'Home';
+    }
+  render() {        
+        return (
+            <HomeStack/>
+        );
   }
 }

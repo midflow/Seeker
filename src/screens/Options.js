@@ -17,10 +17,14 @@ import twitter from "../../assets/twitter.png";
 import google from "../../assets/google.png";
 //import { Navigation} from 'react-native-navigation';
 import { NavigationActions } from 'react-navigation';
+import global from '../../utilities/global';
 
 export default class Options extends Component {
   constructor(props) {
     super(props);
+
+    global.mainScreen = false;
+    global.currentScreen = 'Options';
     //this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });
     this.state = {
       isLoading: true,
@@ -150,8 +154,19 @@ export default class Options extends Component {
             {this.props.navigation.state.params.name}
           </Text>
 
-          <TouchableOpacity  style={{ flex:0.7, justifyContent: "flex-start", alignItems: "center" }} onPress={() => {
-              this.props.navigation.navigate("Home_screen");
+          <TouchableOpacity  style={{ flex:0.7, justifyContent: "flex-start", alignItems: "center" }} onPress={() => {              
+              const {navigation} = this.props;
+              global.mainScreen=true;
+              
+              navigation.dispatch({
+                  routeName: 'Home_screen',
+                  type: 'GoToRoute',
+              });
+              // this.props.navigation.dispatch(NavigationActions.back({
+              //     key:'Home_screen'              
+              //   }));             
+              //this.props.navigation.navigate("Home_screen");
+              //this.props.navigation = null; 
               // const resetAction = NavigationActions.reset({
               //   key:null,
               //   index: 0,

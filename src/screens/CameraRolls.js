@@ -10,11 +10,16 @@ import {
 } from 'react-native';
 
 import CameraRollPicker from 'react-native-camera-roll-picker';
+import global from '../../utilities/global';
 //import styles from '../Style';
 
 export default class CameraRolls extends Component {
   constructor(props) {
     super(props);
+
+    global.mainScreen = false;
+    global.currentScreen = 'CameraRoll';
+    global.cameraroll = true;
 
     this.state = {
       path: '',
@@ -38,7 +43,10 @@ export default class CameraRolls extends Component {
         <View style={[styles.overlay, styles.topOverlay]}>
         <TouchableOpacity
                         style={styles.BackButton}
-                        onPress={() => { this.props.navigation.navigate('Home_screen', { path: this.state.path, cameraroll:'true' }) }}
+                        onPress={() => { 
+                          this.props.navigation.navigate('Home_screen', { path: this.state.path, cameraroll:'true' });
+                          //this.props.navigation = null; 
+                      }}
                     >            
                         <Image
                                 source={require('../../assets/back.png')}
