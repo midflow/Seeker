@@ -147,6 +147,42 @@ export default class Candidates extends Component {
     }
 
     render() {
+        var CroppingView = React.createClass({
+            propTypes: {
+              cropTop: React.PropTypes.number,
+              cropLeft: React.PropTypes.number,
+              width: React.PropTypes.number.isRequired,
+              height: React.PropTypes.number.isRequired
+            },
+            getDefaultProps() {
+              return {
+                cropTop: 0,
+                cropLeft: 0
+              }
+            },
+            render() {
+              return (
+                <View style={[{
+                  position: 'absolute',
+                  overflow: 'hidden',
+                  top: this.props.cropTop,
+                  left: this.props.cropLeft,
+                  height: this.props.height,
+                  width: this.props.width,
+                  backgroundColor: 'transparent'
+                  }, this.props.style]}>
+                  <View style={{
+                    position: 'absolute',
+                    top: this.props.cropTop * -1,
+                    left: this.props.cropLeft * -1,
+                    backgroundColor: 'transparent'
+                  }}>
+                    {this.props.children}
+                  </View>
+                </View>
+              );
+            }
+          });
         // const dataSource = this.ds.cloneWithRows([{
         //     resolved_url: this.props.navigation.state.params.path,
         //     name: 'Obama'
@@ -223,6 +259,19 @@ export default class Candidates extends Component {
                                     <View style={{ flexDirection: 'row', paddingBottom: 20 }}>
                                         <TouchableOpacity onPress={() => { this.props.navigation.navigate('Options_screen', { name: data.identity.name }) }}>
                                             <Image style={styles.imageViewContainer} source={{ uri: this.state.imageSource }} />
+                                            <CroppingView
+                                                cropTop={data.face_location.top}
+                                                cropLeft={data.face_location.left}
+                                                width={data.face_location.width}
+                                                height={data.face_location.height}
+                                                style={{
+                                                    borderRadius: 5
+                                                }}>
+                                                <Image
+                                                    source={{ uri: this.state.imageSource }}
+                                                    style={styles.imageViewContainer}
+                                                    resizeMode="contain" />
+                                                </CroppingView>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.textViewContainer} onPress={() => {
                                             global.name = data.identity.name;

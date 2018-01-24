@@ -13,6 +13,7 @@
     "react-native": "0.51.0",
     "react-native-camera": "^0.12.0",
     "react-native-camera-roll-picker": "^1.2.3",
+    "react-native-cropping": "0.0.4",
     "react-native-image-resizer": "^1.0.0",
     "react-navigation": "^1.0.0-beta.22"
   },
