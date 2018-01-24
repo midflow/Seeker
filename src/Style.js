@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 12,
     marginRight: 12,
-    fontSize: 25,
+    fontSize: 20,
     color: "#fff",
     textAlignVertical: "center",
     alignContent: "center",
@@ -154,6 +154,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
   },
+  ActivityIndicatorStyle:{
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  
+},
 });
 
 export default styles;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, WebView } from 'react-native';
+import { View, Text, WebView, ActivityIndicator } from 'react-native';
+import styles from '../Style';
 //import global from '../../utilities/global';
 
 export default class Page extends Component {
@@ -10,17 +11,25 @@ export default class Page extends Component {
         global.currentScreen = 'Page';
     }
 
+    ActivityIndicatorLoadingView() {
+    
+        return (
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator color='#009688' size='large' style={styles.ActivityIndicatorStyle} />
+            </View>
+        );
+      }
+
     static navigationOptions = ({ navigation }) => ({
         title: navigation.state.params.name,
       });
 
-    render() {
-        global.currentScreen = 'Page';
+    render() {        
         return (
             <WebView
                 source={{ uri: this.props.navigation.state.params.url }}
                 style={{ marginTop: 20 }}
-                renderLoading={this.renderLoading}
+                renderLoading={this.ActivityIndicatorLoadingView}
                 startInLoadingState
             />
         );

@@ -68,8 +68,8 @@ export default class Options extends Component {
   render() {
     if (this.state.isLoading) {
         return (
-            <View style={[styles.container, styles.horizontal]}>
-                <ActivityIndicator size="large" color="#0000ff" />
+          <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator color='#009688' size='large' style={styles.ActivityIndicatorStyle} />
             </View>
         );
     }

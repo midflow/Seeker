@@ -26,7 +26,7 @@ export default class Candidates extends Component {
         this.state = {
             IBMImages: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),  
             identity:null,
-            isLoading:false,  
+            isLoading:true,  
             noFaces:true, 
             isConnected: true, 
             imageSource:'',      
@@ -38,51 +38,58 @@ export default class Candidates extends Component {
         global.uri = this.props.navigation.state.params.path;  
     }
 
+    componentWillUnmount() {
+        NetInfo.isConnected.removeEventListener('change', this.handleConnectionChange);
+    }
+    
+    handleConnectionChange = (isConnected) => {
+        if (isConnected)
+        {
+            this.setState({
+                isConnected:true,
+                imageSource:this.props.navigation.state.params.path,
+            });
+
+            if (this.state.isConnected)
+                ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
+                    this.setState({ isLoading: true });
+                    api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
+
+                        if (res.images.length > 0) {
+                            res.images[0].faces.forEach(e => {
+                                if (e.identity)
+                                this.setState({
+                                    noFaces:false,
+                                });
+                            });
+
+                            this.setState({
+                                IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
+                                isLoading: false,
+                                identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
+                                //IBMImages: this.state.IBMImages.cloneWithRows(data)
+                            });
+                        }
+                    })
+                }).catch((err) => {
+                    // Oops, something went wrong. Check that the filename is correct and
+                    // inspect err to get more details.
+                    console.log(err);
+                });
+        }
+        else
+        {
+            this.setState({
+                isConnected:false,
+            });               
+        }
+    }
 
     componentDidMount() {
+
+        NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
         // Check for network connectivity
-        NetInfo.isConnected.fetch().done((isConnected) => {
-            if ( isConnected )
-            {
-                this.setState({
-                    isConnected:true,
-                    imageSource:this.props.navigation.state.params.path,
-                });
-
-                if (this.state.isConnected)
-                    ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
-                        this.setState({ isLoading: true });
-                        api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
-
-                            if (res.images.length > 0) {
-                                res.images[0].faces.forEach(e => {
-                                    if (e.identity)
-                                    this.setState({
-                                        noFaces:false,
-                                    });
-                                });
-
-                                this.setState({
-                                    IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
-                                    isLoading: false,
-                                    identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
-                                    //IBMImages: this.state.IBMImages.cloneWithRows(data)
-                                });
-                            }
-                        })
-                    }).catch((err) => {
-                        // Oops, something went wrong. Check that the filename is correct and
-                        // inspect err to get more details.
-                        console.log(err);
-                    });
-            }
-            else
-            {
-                this.setState({
-                    isConnected:false,
-                });               
-            }
-        });
+        
         // if (this.props.navigation.state.params.cameraroll=='true')
         // {
         //     this.setState({
@@ -135,8 +142,8 @@ export default class Candidates extends Component {
         if (this.state.isLoading && this.state.IBMImages.getRowCount() === 0) {
             return (
                 <View style={[styles.container, styles.horizontal]}>
-                    <ActivityIndicator size="large" color="#0000ff" />
-                </View>
+                <ActivityIndicator color='#009688' size='large' style={styles.ActivityIndicatorStyle} />
+            </View>
             );
         }
         else if (this.state.noFaces || this.state.IBMImages.getRowCount() === 0 || (this.state.IBMImages.getRowCount()==1 
