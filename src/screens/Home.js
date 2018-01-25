@@ -56,7 +56,7 @@ export default class Home extends Component {
                 'Exit App',
                 'Exiting the application?', [{
                     text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
+                    //onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel'
                 }, {
                     text: 'OK',
@@ -92,7 +92,7 @@ export default class Home extends Component {
                 //         'Exit App',
                 //         'Exiting the application?', [{
                 //             text: 'Cancel',
-                //             onPress: () => console.log('Cancel Pressed'),
+                //             onPress: () => //console.log('Cancel Pressed'),
                 //             style: 'cancel'
                 //         }, {
                 //             text: 'OK',
@@ -128,7 +128,7 @@ export default class Home extends Component {
             this.camera.capture()
                 .then(
                 (data) => {
-                    console.log(data);
+                    //console.log(data);
                     this.setState({ path: data.path });
                 }
                 )

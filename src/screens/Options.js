@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import {
   View,
-  Text,
-  ListView,
+  Text,  
   Image,
   FlatList,
   TouchableOpacity,
   ActivityIndicator
 } from "react-native";
-import Row from "../Row";
 import api from "../../utilities/api";
 import styles from "../Style";
 import instagram from "../../assets/instagram.png";
@@ -16,7 +14,7 @@ import facebook from "../../assets/facebook.png";
 import twitter from "../../assets/twitter.png";
 import google from "../../assets/google.png";
 //import { Navigation} from 'react-native-navigation';
-import { NavigationActions } from 'react-navigation';
+//import { NavigationActions } from 'react-navigation';
 import global from '../../utilities/global';
 
 export default class Options extends Component {
@@ -25,7 +23,6 @@ export default class Options extends Component {
 
     global.mainScreen = false;
     global.currentScreen = 'Options';
-    //this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });
     this.state = {
       isLoading: true,
       result: [],
@@ -61,7 +58,7 @@ export default class Options extends Component {
         this.setState({
             isLoading: false,
         });
-        console.log(err);
+        //console.log(err);
       });
   }
 

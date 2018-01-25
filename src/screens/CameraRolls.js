@@ -33,8 +33,8 @@ export default class CameraRolls extends Component {
       path: images.length>0?images[0].uri:"",
     });
 
-    console.log(current);
-    console.log(this.state.selected);
+    //console.log(current);
+    //console.log(this.state.selected);
   }
 
   render() {
@@ -45,7 +45,6 @@ export default class CameraRolls extends Component {
                         style={styles.BackButton}
                         onPress={() => { 
                           this.props.navigation.navigate('Home_screen', { path: this.state.path, cameraroll:'true' });
-                          //this.props.navigation = null; 
                       }}
                     >            
                         <Image
@@ -66,14 +65,14 @@ export default class CameraRolls extends Component {
                     </TouchableOpacity>
         </View>
         <CameraRollPicker
-          scrollRenderAheadDistance={2000}
-          initialListSize={1}
+          scrollRenderAheadDistance={500}
+          initialListSize={3}
           pageSize={3}
-          removeClippedSubviews={false}
+          removeClippedSubviews={true}
           groupTypes='SavedPhotos'
-          batchSize={5}
+          batchSize={6}
           selectSingleItem={true}
-          maximum={3}
+          maximum={1}
           selected={this.state.selected}
           assetType='Photos'
           imagesPerRow={3}

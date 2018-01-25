@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, WebView, ActivityIndicator } from 'react-native';
 import styles from '../Style';
-//import global from '../../utilities/global';
+import global from '../../utilities/global';
 
 export default class Page extends Component {
     constructor(props) {
