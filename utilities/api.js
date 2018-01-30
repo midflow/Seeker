@@ -34,7 +34,7 @@ var api = {
         return fetch(url)
             .then(res => res.json())
             .catch(error => {
-                console.error(error);
+                //console.error(error);
             });
     },
 
@@ -64,7 +64,7 @@ var api = {
                    return JSON.parse(res._bodyText)
             })
             .catch(error => {
-                console.error(error);
+                //console.error(error);
             });
     },
 
@@ -113,7 +113,7 @@ var api = {
             })
             .then(res => res.json())
             .catch(error => {
-                console.error(error);
+                //console.error(error);
             });
     },
     createLogRequestFromApiAsync_Fetch($name,$ibmwatson,$ourdb) {
@@ -129,7 +129,7 @@ var api = {
             method: 'POST',
             headers: {
                 'cache-control': 'no-cache',
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'content-Type': 'multipart/form-data'
             },
             body: data,
         }
@@ -140,7 +140,7 @@ var api = {
                    return JSON.parse(res._bodyText)
             })
             .catch(error => {
-                console.error(error);
+                //console.error(error);
             });
     },
 }

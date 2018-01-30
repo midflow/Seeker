@@ -24,7 +24,7 @@ export default class Candidates extends Component {
 
         this.state = {
             //IBMImages: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 }),
-            listData:null,
+            listData: null,
             identity: null,
             isLoading: true,
             noFaces: true,
@@ -44,45 +44,7 @@ export default class Candidates extends Component {
 
     handleConnectionChange = (isConnected) => {
         if (isConnected) {
-            this.setState({
-                isConnected: true,
-                imageSource: this.props.navigation.state.params.path,
-            });
-
-            if (this.state.isConnected)
-                ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
-                    this.setState({ isLoading: true });
-                    api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
-
-                        if (res.images.length > 0) {
-                            res.images[0].faces.forEach(e => {
-                                if (e.identity)
-                                    this.setState({
-                                        noFaces: false,
-                                    });
-                                    else
-                                        {
-                                            api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
-                                        }
-                            });
-
-                            this.setState({
-                                //IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
-                                listData:res.images[0].faces,
-                                isLoading: false,
-                                identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
-                            });
-                        }
-                        else
-                                        {
-                                            api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
-                                        }
-                    })
-                }).catch((err) => {
-                    // Oops, something went wrong. Check that the filename is correct and
-                    // inspect err to get more details.
-                    //console.log(err);
-                });
+            this.imageProcessing();
         }
         else {
             this.setState({
@@ -96,60 +58,67 @@ export default class Candidates extends Component {
         if (Platform.OS == 'ios') NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
         else {
             NetInfo.isConnected.fetch().done((isConnected) => {
-            if (isConnected) {
-                this.setState({
-                    isConnected: true,
-                    imageSource: this.props.navigation.state.params.path,
-                });
-
-                if (this.state.isConnected)
-                    ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
-                        this.setState({ isLoading: true });
-                        api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
-
-                            if (res.images.length > 0) {
-                                res.images[0].faces.forEach(e => {
-                                    if (e.identity)
-                                        this.setState({
-                                            noFaces: false,
-                                        });
-                                        else
-                                        {
-                                            api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
-                                        }
-                                });
-
-                                this.setState({
-                                    //IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
-                                    listData: res.images[0].faces,
-                                    isLoading: false,
-                                    identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
-                                });
-                            }
-                            else
-                            {
-                                api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
-                            }
-                        })
-                    }).catch((err) => {
-                        //console.log(err);
+                if (isConnected) {
+                    this.imageProcessing();
+                }
+                else {
+                    this.setState({
+                        isConnected: false,
                     });
-            }
-            else {
-                this.setState({
-                    isConnected: false,
-                });
-            }
+                }
             })
         }
-        
+
         this.setState({
             imageSource: this.props.navigation.state.params.path
         });
 
     }
 
-    render() {                
+    imageProcessing ()
+    {
+        this.setState({
+            isConnected: true,
+            imageSource: this.props.navigation.state.params.path,
+        });
+
+        if (this.state.isConnected)
+            ImageResizer.createResizedImage(this.props.navigation.state.params.path, 320, 320, 'JPEG', 100).then((response) => {
+                this.setState({ isLoading: true });
+                api.getCandidatesFromApiAsync_Fetch(response.uri).then((res) => {
+
+                    if (res.images.length > 0) {
+
+                        var noIdentity = true;
+
+                        res.images[0].faces.forEach(e => {                            
+                            if (e.identity) {
+                                noIdentity = false;
+                                this.setState({
+                                    noFaces: false,
+                                    identity: e.identity
+                                });    
+                            }                                   
+                        });
+
+                        if (noIdentity) api.createLogRequestFromApiAsync_Fetch('N/A', '0', '0');
+                        
+                        this.setState({
+                            //IBMImages: this.state.IBMImages.cloneWithRows(res.images[0].faces),
+                            listData: res.images[0].faces,
+                            isLoading: false,
+                            //identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
+                        });
+                    }
+                    else {
+                        api.createLogRequestFromApiAsync_Fetch('N/A', '0', '0');
+                    }
+                })
+            }).catch((err) => {
+                //console.log(err);
+            });
+    }
+    render() {
         if (!this.state.isConnected) {
             return <View style={{ flex: 0.5, flexDirection: "column" }}>
                 <TouchableOpacity style={styles.textViewContainer} onPress={() => {
@@ -171,14 +140,14 @@ export default class Candidates extends Component {
             </View>;
         }
         else
-            if (this.state.isLoading ) {
+            if (this.state.isLoading) {
                 return (
                     <View style={[styles.container, styles.horizontal]}>
                         <ActivityIndicator color='#009688' size='large' style={styles.ActivityIndicatorStyle} />
                     </View>
                 );
             }
-            else if (this.state.noFaces  || (this.state.identity == null)) {
+            else if (this.state.noFaces || (this.state.identity == null)) {
                 return <View style={{ flex: 0.5, flexDirection: "column" }}>
                     <View style={{ flex: 1, alignItems: "center", paddingBottom: 20 }}>
                         <Image style={styles.imageViewTitle} source={{ uri: this.props.navigation.state.params.path }} />
@@ -214,7 +183,7 @@ export default class Candidates extends Component {
                                     return (
                                         <View style={{ flexDirection: 'row', paddingBottom: 20 }}>
                                             <TouchableOpacity onPress={() => { this.props.navigation.navigate('Options_screen', { name: data.item.identity.name }) }}>
-                                                <Image style={styles.imageViewContainer} source={{ uri: this.state.imageSource }} />                                           
+                                                <Image style={styles.imageViewContainer} source={{ uri: this.state.imageSource }} />
                                             </TouchableOpacity>
                                             <TouchableOpacity style={styles.textViewContainer} onPress={() => {
                                                 global.name = data.item.identity.name;
@@ -229,11 +198,11 @@ export default class Candidates extends Component {
                                         </View>
                                     );
                                 else
-                                    return <View />;                            
+                                    return <View />;
                             }}
 
                             keyExtractor={(item, index) => index}
-                        />                    
+                        />
                     </ScrollView>
                 );
             }
