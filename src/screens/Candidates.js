@@ -60,6 +60,10 @@ export default class Candidates extends Component {
                                     this.setState({
                                         noFaces: false,
                                     });
+                                    else
+                                        {
+                                            api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
+                                        }
                             });
 
                             this.setState({
@@ -69,6 +73,10 @@ export default class Candidates extends Component {
                                 identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
                             });
                         }
+                        else
+                                        {
+                                            api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
+                                        }
                     })
                 }).catch((err) => {
                     // Oops, something went wrong. Check that the filename is correct and
@@ -105,6 +113,10 @@ export default class Candidates extends Component {
                                         this.setState({
                                             noFaces: false,
                                         });
+                                        else
+                                        {
+                                            api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
+                                        }
                                 });
 
                                 this.setState({
@@ -113,6 +125,10 @@ export default class Candidates extends Component {
                                     isLoading: false,
                                     identity: res.images[0].faces.length > 0 && res.images[0].faces[0].identity ? res.images[0].faces[0].identity : null,
                                 });
+                            }
+                            else
+                            {
+                                api.createLogRequestFromApiAsync_Fetch('N/A','0','0');
                             }
                         })
                     }).catch((err) => {

@@ -116,6 +116,33 @@ var api = {
                 console.error(error);
             });
     },
+    createLogRequestFromApiAsync_Fetch($name,$ibmwatson,$ourdb) {
+        var url = 'http://ec2-13-112-53-179.ap-northeast-1.compute.amazonaws.com/api/log_request';
+
+        let data = new FormData()
+        
+        data.append("name", $name);
+        data.append("ibmwatson", $ibmwatson);
+        data.append("ourdb", $ourdb);
+
+        const config = {            
+            method: 'POST',
+            headers: {
+                'cache-control': 'no-cache',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data,
+        }
+
+        return fetch(url, config)
+            .then(res => {
+                if (res.ok)
+                   return JSON.parse(res._bodyText)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    },
 }
 
 module.exports = api;

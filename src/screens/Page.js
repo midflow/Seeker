@@ -17,7 +17,7 @@ export default class Page extends Component {
             <View style={[styles.container, styles.horizontal]}>
                 <ActivityIndicator color='#009688' size='large' style={styles.ActivityIndicatorStyle} />
             </View>
-        );
+        );                
       }
 
     static navigationOptions = ({ navigation }) => ({
@@ -31,7 +31,7 @@ export default class Page extends Component {
                 style={{ marginTop: 20 }}
                 renderLoading={this.ActivityIndicatorLoadingView}
                 startInLoadingState
-            />
+            />        
         );
     }
 }

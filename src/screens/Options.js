@@ -40,6 +40,7 @@ export default class Options extends Component {
       .getInfoFromNameAsync(this.props.navigation.state.params.name)
       .then(res => {
         if (res && res[0] && res.length > 0)
+        {
           this.setState({
             isLoading: false,  
             result: res,
@@ -47,7 +48,8 @@ export default class Options extends Component {
             twitter: res[0]?res[0].twitter:"",
             instagram: res[0]?res[0].instagram:"",
             google: res[0]?res[0].google:""
-          })
+          });
+            }
           else
           {
             this.setState({
