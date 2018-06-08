@@ -38,3 +38,19 @@ android:
             mkdir -p test-results/fastlane
             bundle exec fastlane test
             mv fastlane/report.xml test-results/fastlane
+workflows:
+  version: 2
+  node-android-ios:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
+      - android:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
