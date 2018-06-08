@@ -4,7 +4,8 @@ jobs:
     docker:
       - image: debian:stretch
     steps:
-      - checkout
+      - checkout:
+          path: ~/Seeker
       
       - restore_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
