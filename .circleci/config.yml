@@ -5,8 +5,6 @@ jobs:
       - image: debian:stretch
     steps:
       - checkout
-      teps:
-      - checkout
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
