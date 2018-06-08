@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/Seeker
     docker:
       - image: debian:stretch
     steps:
